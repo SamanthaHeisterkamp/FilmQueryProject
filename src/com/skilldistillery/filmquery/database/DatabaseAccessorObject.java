@@ -95,6 +95,7 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	    	      film.setReleaseYear(rs.getInt("release_year"));
 	    	      film.setRating(rs.getString("rating"));
 	    	      film.setLanguage(rs.getString("l.name"));
+	    	      film.setActors(findActorsByFilmId(rs.getInt("id")));
 	    	      films.add(film);
 	    	      
 	      

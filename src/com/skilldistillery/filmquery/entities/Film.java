@@ -189,8 +189,8 @@ public class Film {
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(actors, description,  id, languageID, length, rating, releaseYear, rentalDuration,
-					rentalRate, replacementCost, specialFeatures, title);
+			return Objects.hash(actors, description, id, language, languageID, length, rating, releaseYear,
+					rentalDuration, rentalRate, replacementCost, specialFeatures, title);
 		}
 
 
@@ -207,7 +207,7 @@ public class Film {
 				return false;
 			Film other = (Film) obj;
 			return Objects.equals(actors, other.actors) && Objects.equals(description, other.description)
-					&&   id == other.id && languageID == other.languageID
+					&& id == other.id && Objects.equals(language, other.language) && languageID == other.languageID
 					&& length == other.length && Objects.equals(rating, other.rating)
 					&& releaseYear == other.releaseYear && rentalDuration == other.rentalDuration
 					&& Double.doubleToLongBits(rentalRate) == Double.doubleToLongBits(other.rentalRate)
