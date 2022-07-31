@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
 
 public class FilmQueryApp {
@@ -56,7 +57,9 @@ public class FilmQueryApp {
 						System.out.println( "Film: " + film.getTitle() 
 								+  "\nRelease Year: " + film.getReleaseYear() 
 								+ "\nRating: " + film.getRating() 
-								+ "\nDescription: " + film.getDescription());
+								+ "\nDescription: " + film.getDescription()
+								+ "\nLanguage: " + film.getLanguage()
+								+ "\nActors: " + db.findActorsByFilmId(id));
 						System.out.println("-----------------------------------------------------------------------------------------------");
 						System.out.println(" ");
 					} else {
@@ -68,10 +71,14 @@ public class FilmQueryApp {
 					System.out.println("Please enter a search keyword: ");
 					List<Film> films = db.findFilmByKeyword(input.next());
 					if(films.size() == 0 ) {
+						System.out.println("---------------------------------");
 						System.out.println("No Film with that keyword exists.");
+						System.out.println("---------------------------------");
 					}else {
 						for (Film film2 : films) {
+							System.out.println("--------------------------------------------------------------------------------------------------------------");
 							System.out.println(film2.keywordString());
+							System.out.println("--------------------------------------------------------------------------------------------------------------");
 							
 						}
 					}
@@ -80,11 +87,11 @@ public class FilmQueryApp {
 					System.out.println("Bye");
 					loop = false;
 					break;
-				case 4:
-					System.out.println(" ");
-					System.out.println(" ");
+				default:
+					System.out.println("----------------------------------");
+					System.out.println("Please choose a vaild menu option.");
+					System.out.println("----------------------------------");
 					break;
-    //todo: print menu //no null pointer want to print film not found
   }
 			}
 		}}}

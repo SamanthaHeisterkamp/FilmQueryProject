@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.params.shadow.com.univocity.parsers.common.fields.FieldConversionMapping;
+
 import com.skilldistillery.filmquery.entities.Actor;
 import com.skilldistillery.filmquery.entities.Film;
 
@@ -15,14 +17,19 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	private static final String URL = "jdbc:mysql://localhost:3306/sdvid";
 	 String user = "student";
 	 String pass = "student";
-
+	 
+	 
+	
 	@Override
 	public Film findFilmById(int filmId){
 		Film film = null ;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
-			String sql = "SELECT * FROM film WHERE id = ?";
-
+			String sql = "SELECT film.*, language.name "
+					+ "FROM film JOIN language "
+					+ "ON film.language_id = language.id "
+					+ "WHERE film.id = ?";
+			
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
 
@@ -40,9 +47,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	    	      double repCost = rs.getDouble("replacement_cost");
 	    	      String rating = rs.getString("rating");
 	    	      String features = rs.getString("special_features");
+	    	      String language = rs.getString("language.name");
 	    	      
-	    	   film = new Film(id, title, desc, releaseYear, langId, 
-	    			   rentDur, rate, length, repCost, rating, features, null);
+	    	      
+	    	   film = new Film(id, title, desc, releaseYear, langId, rentDur, rate, length, 
+	    			   repCost, rating, features, language, null);
 				
 	    	//   film.setActors(findActorsByFilmId(filmId));
 				
@@ -66,7 +75,11 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
 			str = "%" + str + "%";
-			String sql = "SELECT * FROM film WHERE title LIKE ? OR description LIKE ?";
+			String sql = "SELECT * FROM film f JOIN"
+					+ " film_category fc ON f.id = fc.film_id "
+					+ "JOIN category c ON fc.category_id = c.id "
+					+ "JOIN language l ON f.language_id = l.id "
+					+ "WHERE title LIKE ? OR description LIKE ?";
 			
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, str);
@@ -81,12 +94,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	    	      film.setDescription(rs.getString("description"));
 	    	      film.setReleaseYear(rs.getInt("release_year"));
 	    	      film.setRating(rs.getString("rating"));
+	    	      film.setLanguage(rs.getString("l.name"));
 	    	      films.add(film);
 	    	      
 	      
 		
 		
-	    	//   film.setActors(findActorsByFilmId(filmId));
 				
 			}
 			rs.close();
@@ -139,24 +152,20 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		Actor actorID = null;
 		try {
 			Connection conn = DriverManager.getConnection(URL, user, pass);
-			String sql = "SELECT * "
-				+ " FROM film JOIN film_actor ON film.id = film_actor.film_id WHERE actor_id = ?";
-//			SELECT a.id, a.first_name, a.last_name
-//			FROM actor a
-//			INNER JOIN film_actor fa ON a.id = fa.actor_id
-//			INNER JOIN film f ON fa.film_id = f.id
-//			WHERE film_id = ?;
+			String sql = "SELECT a.id, a.first_name, a.last_name, film.id" + " FROM film_actor f"
+					+ " JOIN actor a ON f.actor_id = a.id" + " JOIN film ON f.film_id = film.id" + " WHERE film.id = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, filmId);
-			System.out.println(stmt);
+			//System.out.println(stmt);
 
 			ResultSet rs = stmt.executeQuery();
 			
-			if (rs.next()) {
+			while (rs.next()) {
 				actorID = new Actor();
 				actorID.setId(rs.getInt("id"));
 				actorID.setFirstName(rs.getString("first_name"));
 				actorID.setLastName(rs.getString("last_name"));
+				actorByFilmId.add(actorID);
 			
 			}
 			rs.close();
@@ -166,6 +175,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return (List<Actor>) actorID;
+		return actorByFilmId;
 	}
 	}

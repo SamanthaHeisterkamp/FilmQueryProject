@@ -16,62 +16,54 @@ public class Film {
 	    private double replacementCost;
 	    private String rating;
 	    private String specialFeatures;
+		private String language;
 		
-	    public Film() {
+	    public String getLanguage() {
+			return language;
+		}
+
+
+
+
+
+		public void setLanguage(String language) {
+			this.language = language;
+		}
+
+
+
+
+
+		public Film() {
 			super();
 		}
 	    
 	    
 	    private List<Actor> actors = new ArrayList<>();
-	    
-	    
 
-
-
-
-
-
-
-
-
-
-//	public Film(int id, String title, String description, int releaseYear, int languageID, int rentalDuration,
-//				double rentalRate, int length, double replacementCost, String rating, String specialFeatures) {
-//			super();
-//			this.id = id;
-//			this.title = title;
-//			this.description = description;
-//			this.releaseYear = releaseYear;
-//			this.languageID = languageID;
-//			this.rentalDuration = rentalDuration;
-//			this.rentalRate = rentalRate;
-//			this.length = length;
-//			this.replacementCost = replacementCost;
-//			this.rating = rating;
-//			this.specialFeatures = specialFeatures;
-//		}
 
 
 
 
 
 		public Film(int id, String title, String description, int releaseYear, int languageID, int rentalDuration,
-			double rentalRate, int length, double replacementCost, String rating, String specialFeatures,
-			List<Actor> actors) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.description = description;
-		this.releaseYear = releaseYear;
-		this.languageID = languageID;
-		this.rentalDuration = rentalDuration;
-		this.rentalRate = rentalRate;
-		this.length = length;
-		this.replacementCost = replacementCost;
-		this.rating = rating;
-		this.specialFeatures = specialFeatures;
-		this.actors = actors;
-	}
+				double rentalRate, int length, double replacementCost, String rating, String specialFeatures,
+				String language, List<Actor> actors) {
+			super();
+			this.id = id;
+			this.title = title;
+			this.description = description;
+			this.releaseYear = releaseYear;
+			this.languageID = languageID;
+			this.rentalDuration = rentalDuration;
+			this.rentalRate = rentalRate;
+			this.length = length;
+			this.replacementCost = replacementCost;
+			this.rating = rating;
+			this.specialFeatures = specialFeatures;
+			this.language = language;
+			this.actors = actors;
+		}
 
 
 
@@ -179,15 +171,15 @@ public class Film {
 
 		@Override
 		public String toString() {
-			return "\nFilm [id=" + id + ", title=" + title + ", description=" + description + ", releaseYear="
+			return "Film [id=" + id + ", title=" + title + ", description=" + description + ", releaseYear="
 					+ releaseYear + ", languageID=" + languageID + ", rentalDuration=" + rentalDuration
 					+ ", rentalRate=" + rentalRate + ", length=" + length + ", replacementCost=" + replacementCost
-					+ ", rating=" + rating + ", specialFeatures=" + specialFeatures + ", actors=" + actors + ", film2="
-					;
+					+ ", rating=" + rating + ", specialFeatures=" + specialFeatures + ", language=" + language
+					+ " Actors: " + actors ;
 		}
 		public String keywordString() {
-			return "\nFilm Id: " + id + "\n Title: " + title + ",\nDescription: " + description + "\n Release Year: "
-					+ releaseYear + "\nRating: " + rating ;
+			return  "\nTitle: " + title + "\nDescription: " + description + "\nRelease Year: "
+					+ releaseYear + "\nRating: " + rating + "\nLanguage: " + language + "\nActors: " + actors;
 					
 			
 		}
