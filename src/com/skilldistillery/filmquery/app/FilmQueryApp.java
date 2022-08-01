@@ -84,7 +84,7 @@ public class FilmQueryApp {
 					}
 					break;
 				case 3:
-					System.out.println("Bye");
+					System.out.println("Film Query Terminated.");
 					loop = false;
 					break;
 				default:
